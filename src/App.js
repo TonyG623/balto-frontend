@@ -12,6 +12,7 @@ function App() {
       <BrowserRouter>
         <Navigation/>
         <Switch>
+          <Route exact path="/movie" component={ Movie }/>
           <Route exact path="/movie/:id" component={ Movie }/>
           <Route exact path="/" component={ Movies }/>
           <Route exact path="/movies" component={ Movies }/>

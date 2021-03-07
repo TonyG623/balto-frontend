@@ -29,6 +29,7 @@ class Navigation extends Component {
   handleSearch = async () => {
     const { history } = this.props
     history.push(`/movies/${ this.state.search_term }`)
+    this.setState({search_term: ""})
   }
 
   render() {
@@ -42,6 +43,8 @@ class Navigation extends Component {
       ) : (
         <Navbar bg="light" expand="lg">
           <Navbar.Brand href="/movies">Movie Searcher</Navbar.Brand>
+          <Nav.Link href="/">Home</Nav.Link>
+          <Nav.Link href="movie">Add Movie</Nav.Link>
           <Navbar.Toggle aria-controls="basic-navbar-nav"/>
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">

@@ -14,7 +14,8 @@ export default class MoviesPage extends Component {
     skip: 0,
     currentApplication: {},
     loading: true,
-    movies: {}
+    movies: {},
+    search_term: ""
   }
 
   state = this.initialState
@@ -23,13 +24,13 @@ export default class MoviesPage extends Component {
     const search_term = this.props.match.params.search_term
     const { limit, skip } = this.state
     let response
-    if (search_term) {
+    if (search_term && search_term !== "") {
       response = await axios.get(`http://0.0.0.0:8080/moviesByTitle/${ search_term }`);
     } else {
       response = await axios.get(`http://0.0.0.0:8080/movies?limit=${ limit }&skip=${ skip }`);
     }
     const body = await response.data
-    this.setState({ movies: body, loading: false });
+    this.setState({ movies: body, loading: false, search_term });
   }
 
   fetchMoreMovies = async () => {
@@ -45,7 +46,7 @@ export default class MoviesPage extends Component {
   }
 
   render() {
-    const { movies, loading } = this.state
+    const { movies, loading, search_term } = this.state
 
     let rows = []
 
@@ -91,9 +92,12 @@ export default class MoviesPage extends Component {
 
     return (
       <>
+
         <ToolkitProvider bootstrap4 keyField="name" data={ movies } columns={ columns } search>
           { props => (
             <Container fluid="md">
+              { search_term ? <h5>Showing Movies with { search_term } in title...</h5> : <></> }
+
               { loading ? (
                 <Spinner animation="border" role="status">
                   <span className="sr-only">Loading...</span>
