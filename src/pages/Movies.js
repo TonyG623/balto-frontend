@@ -14,7 +14,7 @@ export default class MoviesPage extends Component {
     skip: 0,
     currentApplication: {},
     loading: true,
-    movies: {},
+    movies: [],
     search_term: ""
   }
 

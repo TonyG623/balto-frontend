@@ -1,0 +1,42 @@
+{
+  "sourceType": "unambiguous",
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "debug": false,
+        "useBuiltIns": "usage",
+        "corejs": {
+          "version": "3",
+          "proposal": true
+        },
+        "targets": {
+          "browsers": ["last 2 versions", "ie >= 11"]
+        }
+      }
+    ],
+    "@babel/preset-react"
+  ],
+  "plugins": [
+    "@babel/plugin-transform-object-assign",
+    "lodash",
+    [
+      "@babel/plugin-proposal-class-properties",
+      {
+        "loose": true
+      }
+    ],
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        "decoratorsBeforeExport": false
+      }
+    ],
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "regenerator": true
+      }
+    ]
+  ]
+}
