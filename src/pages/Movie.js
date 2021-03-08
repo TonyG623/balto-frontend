@@ -104,7 +104,7 @@ export default class MoviePage extends Component {
                 <Form.Control name="genre" type="text" value={ movie.genre } onChange={ this.changeHandler }/>
                 <Form.Label>Director</Form.Label>
                 <Form.Control name="director" type="text" value={ movie.director } onChange={ this.changeHandler }/>
-                <Form.Label>Wiki</Form.Label>
+                <Form.Label>Cast</Form.Label>
                 <Form.Control name="cast" type="text" value={ movie.cast } onChange={ this.changeHandler }/>
                 <Form.Label>Wiki</Form.Label>
                 <Form.Control name="wiki" type="text" value={ movie.wiki } onChange={ this.changeHandler }/>
