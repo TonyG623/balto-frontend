@@ -3,12 +3,14 @@ import { Col, Container, Form, Spinner } from 'react-bootstrap'
 import Button from "react-bootstrap/Button";
 import axios from 'axios'
 import Row from "react-bootstrap/Row";
+import ErrorHandler from "../components/ErrorHandler";
 
 export default class MoviePage extends Component {
   initialState = {
     loading: true,
     movie: {},
-    not_found: false
+    not_found: false,
+    error: ''
   }
 
   state = this.initialState
@@ -36,27 +38,47 @@ export default class MoviePage extends Component {
 
   deleteMovie = async () => {
     this.setState({ loading: true })
-    const { movie } = this.state
-    await axios.delete(`http://0.0.0.0:8080/movie/${ movie.id }`);
-    this.setState({ movie: {}, not_found: true, loading: false })
+    let { movie, error } = this.state
+    try {
+      await axios.delete(`http://0.0.0.0:8080/movie/${ movie.id }`);
+      this.setState({ movie: {}, not_found: true, loading: false, error })
+    } catch (err) {
+      error = `Unable to delete movie: ${ err }`
+      this.setState({ not_found: true, loading: false, error })
+    }
   };
 
   updateMovie = async () => {
     this.setState({ loading: true })
-    const { movie } = this.state
-    const response = await axios.put(`http://0.0.0.0:8080/movie/${ movie.id }`, movie);
-    this.setState({ movie: response.data, loading: false })
+    let { movie, error } = this.state
+    let response
+    try {
+      response = await axios.put(`http://0.0.0.0:8080/movie/${ movie.id }`, movie);
+      this.setState({ movie: response.data, loading: false })
+
+    } catch (err) {
+      error = `Unable to update movie: ${ err }`
+      this.setState({ loading: false, error })
+
+    }
   };
 
   addMovie = async () => {
     this.setState({ loading: true })
-    const { movie } = this.state
-    const response = await axios.post(`http://0.0.0.0:8080/movie/`, movie);
-    this.setState({ movie: response.data, loading: false })
+    let { error, movie } = this.state
+    let response
+
+    try {
+      response = await axios.post(`http://0.0.0.0:8080/movie/`, movie);
+      this.setState({ movie: response.data, loading: false, error })
+    } catch (err) {
+      error = `Unable to add movie: ${ err }`
+      this.setState({ loading: false, error })
+    }
   };
 
   render() {
-    const { loading, movie } = this.state
+    const { loading, movie, error } = this.state
     console.log(movie)
 
     return loading ? (
@@ -68,6 +90,7 @@ export default class MoviePage extends Component {
     ) : (
       <>
         <Container className="mb-12" style={ { marginTop: '2rem' } }>
+          { error && <ErrorHandler error={error}/> }
           <Form>
             <Form.Row>
               <Form.Group as={ Col } controlId="formGridEmail">
